@@ -10,7 +10,8 @@
 				"-Iinclude",
 				"src/*cc",
 				"-o",
-				"bin/game.exe"
+				"bin/game.exe",
+				"lib/*.a"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
