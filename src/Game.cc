@@ -3,6 +3,11 @@
 
 //Rectangle* rectangle{new Rectangle(100, 100, 200, 100, sf::Color::Red)};
 
+//Physics Init
+b2Vec2* gravity{new b2Vec2(0.f, 0.f)};
+b2World* world{new b2World(*gravity)};
+
+
 TextObject* textObj1{new TextObject(ASSETS_FONT_ARCADECLASSIC, 14, sf::Color::White, sf::Text::Bold)};
 
 sf::Clock* gameClock{new sf::Clock()};
@@ -10,6 +15,11 @@ float deltaTime{};
 Player* player1{new Player(ASSETS_SPRITES, 4.f, 16, 16, 0, 5, 100, 25, 200.f)};
 Animation* idleAnimation{new Animation()};
 Animation* runAnimation{new Animation()};
+
+Rigidbody* rigidbody{new Rigidbody(world, b2BodyType::b2_dynamicBody, 
+new b2Vec2(player1->GetSprite()->getPosition().x, player1->GetSprite()->getPosition().y), 
+16, 16, 1, 0, 0, new b2Vec2(player1->GetSprite()->getOrigin().x, player1->GetSprite()->getOrigin().y), 
+0.f)};
 
 Game::Game()
 {
@@ -35,13 +45,22 @@ void Game::Initialize()
   MainLoop();
 }
 
+void Game::UpdatePhysics()
+{
+  world->ClearForces();
+  world->Step(deltaTime, 8, 8);
+}
+
 //Logic, animations, etc
 void Game::Update()
 {
   deltaTime = gameClock->getElapsedTime().asSeconds();
   gameClock->restart();
 
-  if(std::abs(InputSystem::Axis().x) > 0)
+  player1->GetSprite()->setPosition(rigidbody->GetBody()->GetPosition().x, 
+  -rigidbody->GetBody()->GetPosition().y);
+
+  if(std::abs(InputSystem::Axis().x) > 0 || std::abs(InputSystem::Axis().y) > 0)
   {
     runAnimation->Play(deltaTime);
   }
@@ -62,6 +81,8 @@ void Game::MainLoop()
         window->close();
       }
     }
+
+    UpdatePhysics();
     Input();
     Update();
     Render();
@@ -86,7 +107,7 @@ void Game::Draw()
 //Keyboard, joysticks, etc.
 void Game::Input()
 {
-  player1->Move(deltaTime);
+  //player1->Move(deltaTime);
 }
 
 void Game::Destroy()

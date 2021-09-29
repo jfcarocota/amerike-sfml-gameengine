@@ -18,4 +18,5 @@ public:
   void Draw();
   void MainLoop();
   void Destroy();
+  void UpdatePhysics();
 };
