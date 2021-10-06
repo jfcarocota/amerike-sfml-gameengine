@@ -7,10 +7,7 @@ class Game
 private:
   sf::RenderWindow* window{};
   sf::Event* event{};
-public:
-  Game();
-  ~Game();
-  void Initialize();
+
   void Update();
   void Render();
   void Input();
@@ -19,4 +16,8 @@ public:
   void MainLoop();
   void Destroy();
   void UpdatePhysics();
+public:
+  Game();
+  ~Game();
+  void Initialize();
 };

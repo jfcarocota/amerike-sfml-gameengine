@@ -2,27 +2,24 @@
 #include<SFML/Graphics.hpp>
 #include<string>
 #include<iostream>
+#include "Rigidbody.hh"
+#include "GameObject.hh"
 
-class Player
+class Player : public GameObject
 {
 private:
-  std::string textureUrl{};
   float playerScale{};
-  int width{};
-  int height{};
-  int column{};
-  int row{};
-  float posX{};
-  float posY{};
-  sf::Sprite* sprite;
-  sf::Texture* texture;
+
   float playerSpeed{};
 
   void FlipSprite();
 public:
-  Player(std::string textureUrl, float playerScale, int width, int height, int column, int row, float playerSpeed);
-  Player(std::string textureUrl, float playerScale, int width, int height, int column, int row, float posX, float posY, float playerSpeed);
+  Player(std::string textureUrl, float playerScale, int width, int height, int column, int row, float posX, float posY, float playerSpeed, 
+  b2World*& world, sf::RenderWindow*& window);
   ~Player();
   sf::Sprite* GetSprite() const;
-  void Move(float& deltaTime);
+  void Move();
+
+  void Update(float& deltaTime) override;
+  void Draw() override;
 };
