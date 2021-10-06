@@ -39,5 +39,5 @@ void Player::FlipSprite()
 {
   sprite->setScale(InputSystem::Axis().x > 0 ? scale : InputSystem::Axis().x < 0 ? -scale :
   sprite->getScale().x,
-  playerScale);
+  scale);
 }

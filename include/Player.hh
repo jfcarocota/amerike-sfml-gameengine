@@ -8,8 +8,6 @@
 class Player : public GameObject
 {
 private:
-  float playerScale{};
-
   float playerSpeed{};
 
   void FlipSprite();
