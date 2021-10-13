@@ -1,7 +1,10 @@
 #include "GameObject.hh"
+#include "Game.hh"
+
+class Game;
 
 GameObject::GameObject(std::string textureUrl, float scale, int width, int height, int column, int row, 
-float posX, float posY, b2World*& world, sf::RenderWindow*& window)
+float posX, float posY, b2BodyType bodyType, b2World*& world, sf::RenderWindow*& window)
 {
   this->world = world;
   this->window = window;
@@ -20,12 +23,14 @@ float posX, float posY, b2World*& world, sf::RenderWindow*& window)
   sprite->setColor(sf::Color::White);
   sprite->setScale(scale, scale);
 
-  rigidbody = new Rigidbody(world, b2BodyType::b2_dynamicBody,
+  rigidbody = new Rigidbody(world, bodyType,
   new b2Vec2(sprite->getPosition().x, sprite->getPosition().y),
   width * scale, height * scale, 1, 0, 0, new b2Vec2(sprite->getOrigin().x, sprite->getOrigin().y),
   0.f);
 
   sprite->setOrigin(width / 2, height / 2);
+
+  //Game::AddGameObject(this);
 }
 
 GameObject::~GameObject()

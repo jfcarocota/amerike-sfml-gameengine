@@ -19,7 +19,7 @@ protected:
   sf::RenderWindow* window;
 public:
   GameObject(std::string textureUrl, float scale, int width, int height, int column, int row, 
-  float posX, float posY, b2World*& world, sf::RenderWindow*& window);
+  float posX, float posY, b2BodyType bodyType, b2World*& world, sf::RenderWindow*& window);
   ~GameObject();
 
   virtual void Start();

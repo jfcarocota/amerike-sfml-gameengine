@@ -13,7 +13,7 @@ private:
   void FlipSprite();
 public:
   Player(std::string textureUrl, float playerScale, int width, int height, int column, int row, float posX, float posY, float playerSpeed, 
-  b2World*& world, sf::RenderWindow*& window);
+  b2BodyType bodyType, b2World*& world, sf::RenderWindow*& window);
   ~Player();
   sf::Sprite* GetSprite() const;
   void Move();

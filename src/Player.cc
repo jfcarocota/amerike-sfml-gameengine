@@ -1,11 +1,12 @@
 #include "Player.hh"
 #include "InputSystem.hh"
 
-Player::Player(std::string textureUrl, float playerScale, int width, int height, int column, int row, 
-float posX, float posY, float playerSpeed, b2World*& world, sf::RenderWindow*& window) :
-GameObject(textureUrl, playerScale, width, height, column, row, posX, posY, world, window)
+Player::Player(std::string textureUrl, float playerScale, int width, int height, int column, int row,
+float posX, float posY, float playerSpeed, b2BodyType bodyType, b2World*& world, sf::RenderWindow*& window) :
+GameObject(textureUrl, playerScale, width, height, column, row, posX, posY, bodyType, world, window)
 {
   this->playerSpeed = playerSpeed;
+  rigidbody->FreezeRotation(true);
 }
 
 Player::~Player()
@@ -20,6 +21,7 @@ sf::Sprite* Player::GetSprite() const
 void Player::Update(float& deltaTime)
 {
   GameObject::Update(deltaTime);
+  Move();
 }
 
 void Player::Draw()
