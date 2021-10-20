@@ -1,5 +1,7 @@
 #include "CommonHeaders.hh"
 #include "Player.hh"
+#include "Animation.hh"
+#include "TileGroup.hh"
 
 //Rectangle* rectangle{new Rectangle(100, 100, 200, 100, sf::Color::Red)};
 
@@ -18,8 +20,12 @@ sf::Clock* gameClock{new sf::Clock()};
 float deltaTime{};
 Player* player1{};
 GameObject* chest1{};
+GameObject* light1{};
 Animation* idleAnimation{new Animation()};
 Animation* runAnimation{new Animation()};
+
+TileGroup* tileGroup{};
+Tile* tile1{};
 
 uint32 flags{};
     //flags += b2Draw::e_aabbBit;
@@ -27,6 +33,8 @@ uint32 flags{};
     //flags += b2Draw::e_centerOfMassBit;
     //flags += b2Draw::e_pairBit;
     //flags += b2Draw::e_jointBit;
+
+Animation* lightIdle{};
 
 Game::Game()
 {
@@ -36,9 +44,17 @@ Game::Game()
 
   player1 = new Player(ASSETS_SPRITES, 4.f, 16, 16, 0, 5, 100, 25, 200.f, b2BodyType::b2_dynamicBody, world, window);
   chest1 = new GameObject(ASSETS_SPRITES, 4.f, 16, 16, 6, 1, 300, 500, b2BodyType::b2_staticBody, world, window);
+  light1 = new GameObject(ASSETS_SPRITES, 4.f, 16, 16, 6, 3, 500, 500, b2BodyType::b2_staticBody, world, window);
+
+  tileGroup = new TileGroup(window, 10, 10, ASSETS_MAPS, 4.f, 16, 16, ASSETS_TILES);
+
+  //tile1 = new Tile("../assets/tiles.png", 4.f, 16, 16, 0, 2, 0, 0, window);
 
   AddGameObject(player1);
   AddGameObject(chest1);
+  AddGameObject(light1);
+
+  lightIdle = new Animation(light1->GetSprite(), 6, 11, 0.1f, 3);
 }
 
 Game::~Game()
@@ -86,6 +102,8 @@ void Game::Update()
 
   circle->setPosition(player1->GetSprite()->getPosition());
 
+  lightIdle->Play(deltaTime);
+
   if(std::abs(InputSystem::Axis().x) > 0 || std::abs(InputSystem::Axis().y) > 0)
   {
     runAnimation->Play(deltaTime);
@@ -129,13 +147,16 @@ void Game::Draw()
   //player1->Draw();
   //window->draw(*circle);
 
+  tileGroup->Draw();
+  //tile1->Draw();
+
   for(auto &gameObject : *gameObjects)
   {
     gameObject->Draw();
   }
 
   window->draw(*textObj1->GetText());
-  world->DebugDraw();
+  //world->DebugDraw();
 }
 
 //Keyboard, joysticks, etc.
