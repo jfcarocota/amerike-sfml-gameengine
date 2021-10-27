@@ -30,15 +30,16 @@ void TileGroup::GenerateMap()
   {
     for(int x{}; x < COLS; x++)
     {
-      char currentTile{};
+      int posX{scale * tileWidth * x};
+      int posY{scale * tileHeight * y};
 
-      reader->get(currentTile);
-      int posX{atoi(&currentTile) * scale * tileWidth * x};
-      reader->get(currentTile);
-      int posY{atoi(&currentTile) * scale * tileHeight * y};
+      int coord{};
+      *reader >> coord;
+      int col{coord};
+      *reader >> coord;
+      int row{coord};
 
-      tiles->push_back(new Tile(textureUrl, scale, tileWidth, tileHeight, x, y, posX, posY, window));
-      reader->ignore();
+      tiles->push_back(new Tile(textureUrl, scale, tileWidth, tileHeight, col, row, posX, posY, window));
     }
   }
   reader->close();
