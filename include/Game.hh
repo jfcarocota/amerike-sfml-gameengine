@@ -6,6 +6,7 @@
 #include "ContactEventManager.hh"
 #include "DrawPhysics.hh"
 #include<box2d/box2d.h>
+#include<queue>
 
 class Game
 {
@@ -17,6 +18,7 @@ private:
   b2World* world{};
   b2Draw* drawPhysics{};
   std::vector<GameObject*>* gameObjects;
+  std::vector<GameObject*>* gameObjectsDeleteList;
 
   void Update();
   void Render();

@@ -36,6 +36,7 @@ Game::Game()
   world = new b2World(*gravity);
   drawPhysics = new DrawPhysics(window);
   gameObjects = new std::vector<GameObject*>();
+  gameObjectsDeleteList = new std::vector<GameObject*>();
 
   player1 = new Player(ASSETS_SPRITES, 4.f, 16, 16, 0, 5, 500, 300, 200.f, b2BodyType::b2_dynamicBody, world, window);
   player1->SetTagName("Player");
@@ -45,11 +46,7 @@ Game::Game()
   light1->SetTagName("light");
   tileGroup = new TileGroup(window, 12, 12, ASSETS_MAPS, 4.f, 16, 16, ASSETS_TILES);
 
-  AddGameObject(player1);
-  AddGameObject(chest1);
-  AddGameObject(light1);
-
-  contactEventManager = new ContactEventManager(gameObjects);
+  contactEventManager = new ContactEventManager(gameObjects, gameObjectsDeleteList);
 
 
   lightIdle = new Animation(light1->GetSprite(), 6, 11, 0.1f, 3);
@@ -67,13 +64,17 @@ void Game::Start()
   drawPhysics->SetFlags(flags);
   world->SetContactListener(contactEventManager);
 
+  AddGameObject(player1);
+  AddGameObject(chest1);
+  AddGameObject(light1);
+
   textObj1->SetTextStr("Hello game engine");
   idleAnimation = new Animation(player1->GetSprite(), 0, 5, 0.05f, 5);
   runAnimation = new Animation(player1->GetSprite(), 0, 5, 0.08f, 6);
 
-  circle->setRadius(2.f);
+  /*circle->setRadius(2.f);
   circle->setFillColor(sf::Color::Green);
-  circle->setOutlineColor(sf::Color::Green);
+  circle->setOutlineColor(sf::Color::Green);*/
 }
 
 void Game::Initialize()
@@ -99,7 +100,7 @@ void Game::Update()
     gameObject->Update(deltaTime);
   }
 
-  circle->setPosition(player1->GetSprite()->getPosition());
+  //circle->setPosition(player1->GetSprite()->getPosition());
 
   lightIdle->Play(deltaTime);
 
@@ -135,6 +136,13 @@ void Game::MainLoop()
 
 void Game::Render()
 {
+  for(auto& gameobject: *gameObjectsDeleteList)
+  {
+      gameObjects->erase(std::remove(gameObjects->begin(), gameObjects->end(), gameobject), gameObjects->end());
+      delete gameobject;
+  }
+  gameObjectsDeleteList->clear();
+
   window->clear(sf::Color::Black);
   Draw();
   window->display();

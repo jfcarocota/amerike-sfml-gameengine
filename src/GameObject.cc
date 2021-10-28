@@ -36,6 +36,8 @@ float posX, float posY, b2BodyType bodyType, b2World*& world, sf::RenderWindow*&
 GameObject::~GameObject()
 {
   delete rigidbody;
+  delete sprite;
+  delete texture;
 }
 
 void GameObject::Start()

@@ -7,9 +7,9 @@ class ContactEventManager : public b2ContactListener
 {
 private:
   std::vector<GameObject*>* gameObjects;
-
+  std::vector<GameObject*>* gameObjectsDeleteList;
 public:
-  ContactEventManager(std::vector<GameObject*>*& gameObjects);
+  ContactEventManager(std::vector<GameObject*>*& gameObjects, std::vector<GameObject*>*& gameObjectsDeleteList);
   ~ContactEventManager();
   void BeginContact(b2Contact* contact) override;
   void EndContact(b2Contact* contact) override;
