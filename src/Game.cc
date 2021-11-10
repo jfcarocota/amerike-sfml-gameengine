@@ -1,6 +1,5 @@
 #include "CommonHeaders.hh"
 #include "Player.hh"
-#include "Animation.hh"
 #include "TileGroup.hh"
 
 
@@ -13,8 +12,7 @@ float deltaTime{};
 Player* player1{};
 GameObject* chest1{};
 GameObject* light1{};
-Animation* idleAnimation{new Animation()};
-Animation* runAnimation{new Animation()};
+GameObject* pillar{};
 
 TileGroup* tileGroup{};
 Tile* tile1{};
@@ -25,8 +23,6 @@ uint32 flags{};
     //flags += b2Draw::e_centerOfMassBit;
     //flags += b2Draw::e_pairBit;
     //flags += b2Draw::e_jointBit;
-
-Animation* lightIdle{};
 
 Game::Game()
 {
@@ -44,12 +40,11 @@ Game::Game()
   chest1->SetTagName("chest");
   light1 = new GameObject(ASSETS_SPRITES, 4.f, 16, 16, 6, 3, 500, 500, b2BodyType::b2_staticBody, world, window);
   light1->SetTagName("light");
+  pillar = new GameObject(ASSETS_TILES, 4.f, 16, 48, 13, 3, 100, 300, b2BodyType::b2_staticBody, world, window);
+  pillar->SetTagName("pillar");
   tileGroup = new TileGroup(window, 12, 12, ASSETS_MAPS, 4.f, 16, 16, ASSETS_TILES);
 
   contactEventManager = new ContactEventManager(gameObjects, gameObjectsDeleteList);
-
-
-  lightIdle = new Animation(light1->GetSprite(), 6, 11, 0.1f, 3);
 }
 
 Game::~Game()
@@ -67,10 +62,9 @@ void Game::Start()
   AddGameObject(player1);
   AddGameObject(chest1);
   AddGameObject(light1);
+  AddGameObject(pillar);
 
   textObj1->SetTextStr("Hello game engine");
-  idleAnimation = new Animation(player1->GetSprite(), 0, 5, 0.05f, 5);
-  runAnimation = new Animation(player1->GetSprite(), 0, 5, 0.08f, 6);
 
   /*circle->setRadius(2.f);
   circle->setFillColor(sf::Color::Green);
@@ -102,16 +96,16 @@ void Game::Update()
 
   //circle->setPosition(player1->GetSprite()->getPosition());
 
-  lightIdle->Play(deltaTime);
+  //lightIdle->Play(deltaTime);
 
-  if(std::abs(InputSystem::Axis().x) > 0 || std::abs(InputSystem::Axis().y) > 0)
+  /*if(std::abs(InputSystem::Axis().x) > 0 || std::abs(InputSystem::Axis().y) > 0)
   {
     runAnimation->Play(deltaTime);
   }
   else
   {
     idleAnimation->Play(deltaTime);
-  }
+  }*/
 }
 
 void Game::MainLoop()
@@ -155,7 +149,6 @@ void Game::Draw()
   //window->draw(*circle);
 
   tileGroup->Draw();
-  //tile1->Draw();
 
   for(auto &gameObject : *gameObjects)
   {
@@ -163,13 +156,12 @@ void Game::Draw()
   }
 
   window->draw(*textObj1->GetText());
-  world->DebugDraw();
+  //world->DebugDraw();
 }
 
 //Keyboard, joysticks, etc.
 void Game::Input()
 {
-  //player1->Move();
 }
 
 void Game::Destroy()

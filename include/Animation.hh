@@ -1,9 +1,12 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include<fstream>
+#include<string>
 
 class Animation
 {
 private:
+  std::ifstream* reader{};
   sf::Sprite* sprite;
   int animationIndex{};
   int startFrame{};
@@ -13,7 +16,7 @@ private:
   int currentAnimation{};
 public:
   Animation();
-  Animation(sf::Sprite* sprite, int startFrame, int endFrame, float animationDelay, int currentAnimation);
+  Animation(sf::Sprite* sprite, std::string animationUrl);
 
   void Play(float& deltaTime);
   ~Animation();

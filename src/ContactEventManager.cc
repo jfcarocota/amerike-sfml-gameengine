@@ -10,6 +10,7 @@ ContactEventManager::ContactEventManager(std::vector<GameObject*>*& gameObjects,
 
 ContactEventManager::~ContactEventManager()
 {
+  
 }
 
 void ContactEventManager::BeginContact(b2Contact* contact)
@@ -20,12 +21,13 @@ void ContactEventManager::BeginContact(b2Contact* contact)
   if(actorA && actorB)
   {
     std::cout << "Collision: " << actorA->GetTagName() << ", " << actorB->GetTagName() << std::endl;
-    if(actorB->GetTagName().compare("chest") == 0)
+    if(actorB->GetTagName().compare("chest") || actorB->GetTagName().compare("light"))
     {
       gameObjectsDeleteList->push_back(actorB);
     }
   }
 }
+
 void ContactEventManager::EndContact(b2Contact* contact)
 {
 

@@ -1,14 +1,18 @@
 #include "Animation.hh"
 
 Animation::Animation(){}
-
-Animation::Animation(sf::Sprite* sprite, int startFrame, int endFrame, float animationDelay, int currentAnimation)
+// int startFrame, int endFrame, float animationDelay, int currentAnimation
+Animation::Animation(sf::Sprite* sprite, std::string animationUrl)
 {
+  reader = new std::ifstream();
+  reader->open(animationUrl);
   this->sprite = sprite;
-  this->startFrame = startFrame;
-  this->endFrame = endFrame;
-  this->animationDelay = animationDelay;
-  this->currentAnimation = currentAnimation;
+
+  *reader >> startFrame;
+  *reader >> endFrame;
+  *reader >> animationDelay;
+  *reader >> currentAnimation;
+
   animationIndex = startFrame;
 }
 
