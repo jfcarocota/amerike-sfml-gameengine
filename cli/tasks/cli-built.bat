@@ -1,0 +1,1 @@
+g++ -std=c++17 -I cli/include cli/src/*.cc -o cli/bin/heatbyte.exe

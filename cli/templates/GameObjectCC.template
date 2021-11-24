@@ -1,0 +1,22 @@
+#include "TemplateName.hh"
+
+TemplateName::TemplateName(std::string textureUrl, float scale, int width, int height, int column, int row,
+float posX, float posY, b2BodyType bodyType, b2World*& world, sf::RenderWindow*& window) :
+GameObject(textureUrl, scale, width, height, column, row, posX, posY, bodyType, world, window)
+{
+  rigidbody->FreezeRotation(true);
+}
+
+TemplateName::~TemplateName()
+{
+}
+
+void TemplateName::Update(float& deltaTime)
+{
+  GameObject::Update(deltaTime);
+}
+
+void TemplateName::Draw()
+{
+  GameObject::Draw();
+}
